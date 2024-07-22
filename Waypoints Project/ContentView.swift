@@ -31,7 +31,7 @@ struct ContentView: View {
                         }
                         .onEnded { value in
                             // Establish constants
-                            var closestPointIndex = 1
+                            var closestPointIndex = 0
                             var minDistance = CGFloat.greatestFiniteMagnitude
                             
                             // Get the location of the tap in points
