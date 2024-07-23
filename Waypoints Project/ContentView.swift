@@ -31,9 +31,10 @@ struct ContentView: View {
                         }
                         .onEnded { value in
                             // Establish constants
-                            var closestPointIndex = 1
+                            var closestPointIndex = 0
+                            var deleting = 0
                             var minDistance = CGFloat.greatestFiniteMagnitude
-                            
+                           
                             // Get the location of the tap in points
                             let xValOG = value.location.x
                             let yValOG = value.location.y
@@ -47,10 +48,10 @@ struct ContentView: View {
                             yVal = (12 * yVal)
                             
                             // Print and establish a point
-                            print("User clicked point: (\(xVal), \(yVal))")
+//                            print("User clicked point: (\(xVal), \(yVal))")
                             let point = CGPoint(x: xValOG, y: yValOG)
 
-                            // For the array, find the min distance point,
+                           // For the array, find the min distance point,
                             for (index, p) in points.enumerated() {
                                 let distance = distanceBetween(p, point)
                                 if distance < minDistance {
@@ -59,26 +60,64 @@ struct ContentView: View {
                                 }
                             }
                             
-                            // If the if the array is empty, just ad it
-                            if(points.count == 0){points.append(point)}
+                            // If you tapped close to another point, you are deleting
+                            if (minDistance < deleteParameter) {deleting = 1}
                             
-                        
-                            // If you want to delete the start point
-                            else if((closestPointIndex == 0) && (minDistance < deleteParameter)){
-                                points.remove(at: (points.count - 1))
-                                points.remove(at: 0)
-                                points.insert(points[0], at: (points.count - 1))
+                            
+                            
+                            
+                            // If deleting
+                            if(deleting == 1){
+                                print("you are deleting")
+                                print("There are \(points.count) points before deleting")
+
+                                                                
+                                // If there is one point (start and finish)
+                                if(points.count == 2){
+                                    points.remove(at: 0)
+                                    points.remove(at: 0)
+                                }
+                                
+                                // If there is more than one point
+                                else{
+                                    if(closestPointIndex == 0){
+                                        print("This is a start point")
+                                        // Remove point
+                                        points.remove(at: closestPointIndex)
+                                        points.remove(at: (points.count-1))
+                                        
+                                        // Reset starting point
+                                        points.append(points[0])
+                                    }
+                                    else{
+                                        print("This is not a start point")
+                                        points.remove(at: closestPointIndex)
+                                    }
+                                }
+                                
+                                print("There are \(points.count) points after deleting")
+
+                                
+                            }
+                            // If adding
+                            else{
+                                print("you are not deleting")
+                                print("There are \(points.count) points before adding")
+
+
+                                // Adding N points
+                                if(points.count > 0){points.insert(point, at: (points.count - 1))}
+                      
+                                // If the if the array is empty, add point as start and finish
+                                if(points.count == 0){
+                                    points.append(point)
+                                    points.append(point)
+                                }
+                                
+                                print("There are \(points.count) points after adding")
+
                             }
                             
-                        
-                            // If there is just one point in the array
-                            else if(points.count == 1){
-                                points.append(point)
-                                points.append(points[0])
-                            }
-                            
-                            // If there are more than one points in the array
-                            else{points.insert(point, at: (points.count - 1))}
                         }
                 )
             Button(action: {
@@ -87,9 +126,11 @@ struct ContentView: View {
                 print("Button tapped!")
             }) {
                 Text("Submit Points")
+                    .frame(width: 200, height: 70) // Adjust the width and height as needed
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8)
+
             }
             .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 200)
                 
