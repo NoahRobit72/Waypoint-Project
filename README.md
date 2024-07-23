@@ -10,7 +10,9 @@ If you delete a start/finish point, the program will assign a new start/endpoint
 
 A demo video can be found [here](https://drive.google.com/file/d/1ljYGHyY6fW9qdr2pXhv2zUHFwx_UMG52/view?usp=sharing)
 
-![homeImage](HomeImage.png)
+<img src="HomeImage.png" width="300" height="600">
+
+<!-- ![homeImage](HomeImage.png) -->
 
 
 
