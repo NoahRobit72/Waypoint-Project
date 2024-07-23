@@ -64,8 +64,6 @@ struct ContentView: View {
                             if (minDistance < deleteParameter) {deleting = 1}
                             
                             
-                            
-                            
                             // If deleting
                             if(deleting == 1){
                                 print("you are deleting")
